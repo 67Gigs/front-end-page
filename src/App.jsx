@@ -1,9 +1,10 @@
-import logo from './logo.svg';
 import './App.css';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import Home from './home';
 import Login from './login';
 import Register from './register';
+import axios from 'axios';
+import './login.css';
 
 function App() {
   return (
