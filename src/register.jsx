@@ -1,7 +1,8 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import './login.css'
+import { useEffect } from 'react'
 
 function Register() {
     const [values, setValues] = React.useState({
@@ -10,16 +11,31 @@ function Register() {
       password: ''
     });
 
+    axios.defaults.withCredentials = true;
+
+
+    const navigate = useNavigate();
     const handleSubmit = (e) => {
         e.preventDefault();
         axios.post(`http://localhost:8081/api/register` ,values)
-          .then(res => {
-            console.log(res.data)
-          })
-          .catch(err => {
-            console.log(err)
-          })
-      }
+        .then(res => {
+            if (res.data.Status === 'Success') {
+                navigate('/login');
+            }
+        })
+        .catch(err => {
+            alert(err)
+        })
+    }
+
+    useEffect(() => {
+      axios.get(`http://localhost:8081/login`)
+      .then(res => {
+          if (res.data.Status === 'Success') {
+              navigate('/');
+          }
+      })
+  }, []);
   return (
     <div className='d-flex justify-content-center align-items-center bg-primary vh-100'>
       <div className='bg-white p-3 rounded w-25'>
@@ -58,41 +74,42 @@ function Register() {
         </form>
       </div>
     </div>
-    // <>
-    //     <section>
-    //         <div className="form-box">
-    //             <div className="form-value">
-    //                 <form  onSubmit={handleSubmit}>
-    //                     <h2>Sign Up</h2>
-    //                     <div className="inputbox">
-    //                         <ion-icon name="mail-outline"></ion-icon>
-    //                         <input type="text" name='name' required onChange={e => setValues({...values, name: e.target.value})} />
-    //                         <label htmlFor="name">Name</label>
-    //                     </div>
-    //                     <div className="inputbox">
-    //                         <ion-icon name="mail-outline"></ion-icon>
-    //                         <input type="email" name='email' required onChange={e => setValues({...values, email: e.target.value})} />
-    //                         <label htmlFor="email">Email</label>
-    //                     </div>
-    //                     <div class="inputbox">
-    //                         <ion-icon name="lock-closed-outline"></ion-icon>
-    //                         <input type="password" required name='password' onChange={e => setValues({...values, password: e.target.value})} />
-    //                         <label htmlFor="password">Password</label>
-    //                     </div>
-    //                     <div class="forget">
-    //                         <a href="#">Forget Password</a>
-    //                     </div>
-    //                     <button type='submit'>Sign up</button>
-    //                     <div class="register">
-    //                         <p>Already have an account ? <a href="/login">Login</a></p>
-    //                     </div>
-    //                 </form>
-    //             </div>
-    //         </div>
-    //     </section>
-    //     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    //     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-    // </>
+
+    /* <>
+        <section>
+            <div className="form-box">
+                <div className="form-value">
+                    <form  onSubmit={handleSubmit}>
+                        <h2>Sign Up</h2>
+                        <div className="inputbox">
+                            <ion-icon name="mail-outline"></ion-icon>
+                            <input type="text" name='name' required onChange={e => setValues({...values, name: e.target.value})} />
+                            <label htmlFor="name">Name</label>
+                        </div>
+                        <div className="inputbox">
+                            <ion-icon name="mail-outline"></ion-icon>
+                            <input type="email" name='email' required onChange={e => setValues({...values, email: e.target.value})} />
+                            <label htmlFor="email">Email</label>
+                        </div>
+                        <div class="inputbox">
+                            <ion-icon name="lock-closed-outline"></ion-icon>
+                            <input type="password" required name='password' onChange={e => setValues({...values, password: e.target.value})} />
+                            <label htmlFor="password">Password</label>
+                        </div>
+                        <div class="forget">
+                            <a href="#">Forget Password</a>
+                        </div>
+                        <button type='submit'>Sign up</button>
+                        <div class="register">
+                            <p>Already have an account ? <a href="/login">Login</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    </> */
   )
 }
 
