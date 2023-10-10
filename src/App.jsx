@@ -5,6 +5,8 @@ import Login from './login';
 import Register from './register';
 import axios from 'axios';
 import './login.css';
+import ForgotPassword from './forget-password'
+import ResetPassword from './resetpassword.jsx'
 
 function App() {
   return (
@@ -13,6 +15,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset_password/:email/:token" element={<ResetPassword />} />
       </Routes>
     </BrowserRouter>
   );

@@ -22,7 +22,7 @@ function Home() {
     })
   }, []);
 
-  const handleDelete = () => {
+  const handleLogout = () => {
     axios.get(`http://localhost:8081/api/logout`)
     .then(res => {
       window.location.reload(true);
@@ -31,13 +31,23 @@ function Home() {
     })
   };
 
+  const handleDelete = () => {
+    axios.get(`http://localhost:8081/api/delete`)
+    .then(res => {
+      window.location.reload(true);
+    }).catch(err => {
+      console.log(err)
+    })
+  }
+
   return (
     <div>
       {
         auth ?
         <div>
           <h3>Welcome {name}</h3>
-          <button className='btn btn-danger' onClick={handleDelete}>Logout</button>
+          <button className='btn btn-danger' onClick={handleLogout}>Logout</button>
+          <button className='btn btn-danger' onClick={handleDelete}>Delete Account</button>
         </div>
         :
         <div>

@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { Link, navigate, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import './login.css';
+import Swal from 'sweetalert2'
 
 function Login() {
     const [values, setValues] = React.useState({
@@ -16,9 +17,23 @@ function Login() {
         axios.post(`http://localhost:8081/api/login` ,values)
         .then(res => {
           if (res.data.Status === 'Success') {
+            Swal.fire({
+              title: 'Welcome!',
+              text: 'Happy to see you again',
+              icon: 'success',
+              confirmButtonText: 'Ok'
+            }).then((result) => {
               navigate('/');
+            })
+
+            
           } else {
-              alert(res.data.Error)
+            Swal.fire({
+              title: 'Error!',
+              text: 'Password or Email is incorrect',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            })
           }
         })
         .catch(err => {
@@ -29,7 +44,7 @@ function Login() {
         axios.get(`http://localhost:8081/login`)
         .then(res => {
             if (res.data.Status === 'Success') {
-                navigate('/');
+              navigate('/');
             }
         })
     }, []);
@@ -50,6 +65,10 @@ function Login() {
           </div>
 
           <button type='submit' className='btn btn-success w-100 rounded-0'>Login</button>
+
+          <br />
+          <Link to='/forgot-password'>Forgot Password ?</Link>
+          <br /> 
 
           <p>
             You are to agree to our <a href='/'>Terms of Use</a> and <a href='/'>Privacy Policy</a>
