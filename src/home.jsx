@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import axios from 'axios';
 
 function Home() {
   const [auth, setAuth] = useState(false);
   const [message, setMessage] = useState('');
   const [name, setName] = useState('');
-
+  const [verified, setVerified] = useState(false);
 
   axios.defaults.withCredentials = true;
   useEffect(() => {
@@ -14,6 +14,8 @@ function Home() {
     .then(res => {
       if (res.data.Status === 'Success') {
         setAuth(true);
+        console.log(res.data);
+        setVerified(res.data.verified);
         setName(res.data.name);
       } else {
         setAuth(false);
@@ -21,6 +23,7 @@ function Home() {
       }
     })
   }, []);
+
 
   const handleLogout = () => {
     axios.get(`http://localhost:8081/api/logout`)
@@ -45,9 +48,21 @@ function Home() {
       {
         auth ?
         <div>
-          <h3>Welcome {name}</h3>
-          <button className='btn btn-danger' onClick={handleLogout}>Logout</button>
-          <button className='btn btn-danger' onClick={handleDelete}>Delete Account</button>
+          {
+              verified ?
+              <div>
+                <h3>Welcome {name}</h3>
+                <button className='btn btn-danger' onClick={handleLogout}>Logout</button>
+                <button className='btn btn-danger' onClick={handleDelete}>Delete Account</button>
+              </div>
+              :
+              <div>
+                <h3>{name}</h3>
+                <h3>Please, First Verify Your Email</h3>
+                <button className='btn btn-danger' onClick={handleLogout}>Logout</button>
+                <button className='btn btn-danger' onClick={handleDelete}>Delete Account</button>
+              </div>
+          }
         </div>
         :
         <div>
